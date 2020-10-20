@@ -40,12 +40,14 @@ router.put('/:code', async (req, res, next) => {
     try {
         const { code } = req.params;
         const { name, description } = req.body;
-        const change = await db.query(`UPDATE companies SET name=$1, description=$2 WHERE code=$3`, [name, description, code]);
         const result = await db.query(`SELECT * FROM companies WHERE code=$1`, [code]);
         if (!result.rows[0]) {
             throw new ExpressError("Company not found", 404);
         }
-        return res.json(result.rows[0]);
+        const change = await db.query(
+            `UPDATE companies SET name=$1, description=$2 WHERE code=$3 RETURNING code, name, description`,
+            [name, description, code]);
+        return res.json(change.rows[0]);
     } catch (err) {
         console.log(err)
         return next(err);
