@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "pg": "^8.4.1"
+    "pg": "^8.4.1",
+    "slugify": "^1.4.5",
+    "supertest": "^5.0.0"
   }
 }
